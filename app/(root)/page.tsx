@@ -1,7 +1,6 @@
 import { UserButton } from '@clerk/nextjs'
 import React from 'react'
-import { FC } from 'react'
-export const Home:FC = () => {
+const Home = () => {
   return (
     <>
     <p>home</p>
