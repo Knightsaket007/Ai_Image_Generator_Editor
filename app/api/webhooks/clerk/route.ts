@@ -23,6 +23,7 @@ export async function POST(req: Request) {
     }
 
     const payload = await req.json();
+NextResponse.json({ message: "Webhook received, processing..." });
     const body = JSON.stringify(payload);
 
     const wh = new Webhook(WEBHOOK_SECRET);
