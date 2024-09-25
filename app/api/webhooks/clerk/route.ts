@@ -61,6 +61,7 @@ export async function POST(req: Request) {
     if (eventType === "user.created") {
         console.log("Processing user creation...");
         const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
+        console.log("user created ..", id, email_addresses, image_url, first_name, last_name, username);
 
         const user = {
             clerkId: id,

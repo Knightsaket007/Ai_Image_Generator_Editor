@@ -8,14 +8,14 @@ import { handleError } from "../utils";
 
 // CREATE
 export async function createUser(user: CreateUserParams) {
+  console.log('hi.. i am herrr 55........................')
+
   try {
     await connectToDatabase();
-
     const newUser = await User.create(user);
-
-    return JSON.parse(JSON.stringify(newUser));
+    return newUser.toObject(); // Convert to plain JS object
   } catch (error) {
-    handleError(error);
+    return handleError(error); // Provide useful response
   }
 }
 
@@ -24,13 +24,12 @@ export async function getUserById(userId: string) {
   try {
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId: userId });
-
+    const user = await User.findOne({ clerkId: userId }).lean(); // Use lean() to optimize
     if (!user) throw new Error("User not found");
 
-    return JSON.parse(JSON.stringify(user));
+    return user;
   } catch (error) {
-    handleError(error);
+    return handleError(error); // Add return for webhook response
   }
 }
 
@@ -39,15 +38,12 @@ export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
     await connectToDatabase();
 
-    const updatedUser = await User.findOneAndUpdate({ clerkId }, user, {
-      new: true,
-    });
-
+    const updatedUser = await User.findOneAndUpdate({ clerkId }, user, { new: true }).lean(); // Use lean() and return plain object
     if (!updatedUser) throw new Error("User update failed");
-    
-    return JSON.parse(JSON.stringify(updatedUser));
+
+    return updatedUser;
   } catch (error) {
-    handleError(error);
+    return handleError(error); // Add return for webhook response
   }
 }
 
@@ -57,15 +53,15 @@ export async function deleteUser(clerkId: string) {
     await connectToDatabase();
 
     // Find user to delete
-    const userToDelete = await User.findOne({ clerkId });
+    const userToDelete = await User.findOne({ clerkId }).lean();  // .lean() ensures a plain object is returned
 
-    if (!userToDelete) {
-      throw new Error("User not found");
-    }
+if (!userToDelete) {
+  throw new Error("User not found");
+}
 
-    // Delete user
-    const deletedUser = await User.findByIdAndDelete(userToDelete._id);
-    revalidatePath("/");
+// TypeScript now knows that userToDelete is an object, not an array
+const deletedUser = await User.findByIdAndDelete((userToDelete as { _id: any })._id);
+revalidatePath("/");
 
     return deletedUser ? JSON.parse(JSON.stringify(deletedUser)) : null;
   } catch (error) {
@@ -82,12 +78,12 @@ export async function updateCredits(userId: string, creditFee: number) {
       { _id: userId },
       { $inc: { creditBalance: creditFee }},
       { new: true }
-    )
+    ).lean();
 
-    if(!updatedUserCredits) throw new Error("User credits update failed");
+    if (!updatedUserCredits) throw new Error("User credits update failed");
 
-    return JSON.parse(JSON.stringify(updatedUserCredits));
+    return updatedUserCredits;
   } catch (error) {
-    handleError(error);
+    return handleError(error); // Add return for webhook response
   }
 }
