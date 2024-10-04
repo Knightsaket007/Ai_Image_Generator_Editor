@@ -5,7 +5,6 @@ const Home = () => {
     <>
     <p>home</p>
     {/* <UserButton afterSignOutUrl='/'/> */}
-    <h1>hiooio</h1>
     </>
   )
 }
