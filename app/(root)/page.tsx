@@ -3,7 +3,7 @@ import React from 'react'
 const Home = () => {
   return (
     <>
-    <p>home</p>
+    <h1>home page... in progress</h1>
     {/* <UserButton afterSignOutUrl='/'/> */}
     </>
   )

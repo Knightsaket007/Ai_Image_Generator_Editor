@@ -22,12 +22,13 @@ export async function getUserById(userId: string) {
   try {
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId: userId }).lean(); // Use lean() to optimize
+    const user = await User.findOne({ clerkId: userId });
+
     if (!user) throw new Error("User not found");
 
-    return user;
+    return JSON.parse(JSON.stringify(user));
   } catch (error) {
-    return handleError(error); // Add return for webhook response
+    handleError(error);
   }
 }
 
