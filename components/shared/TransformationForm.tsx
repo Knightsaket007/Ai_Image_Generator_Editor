@@ -29,6 +29,8 @@ import { CustomField } from "./CustomField"
 import { startTransition, useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
 import { updateCredits } from "@/lib/actions/user.actions"
+import MediaUploader from "./MediaUploader"
+import TransformedImage from "./TransformedImage"
 
 export const formSchema = z.object({
   // username: z.string().min(2).max(50),
@@ -43,7 +45,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
 
 
   const transformationType = transformationTypes[type];
-  const [image, setimage] = useState(data);
+  const [image,setimage] = useState(data);
   const [newTranformation, setnewTranformation] = useState<Transformations | null>(null);
   const [isSubmitting, setisSubmitting] = useState(false);
   const [isTransforming, setisTransforming] = useState(false)
@@ -99,18 +101,20 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     }, 1000);
   }
 
-// Returns app credit
+  // Update creditFee
   const onTransformHandler = async () => {
     setisTransforming(true);
     settransfiormationConfig(
-      deepMergeObjects(newTranformation,transfiormationConfig)
+      deepMergeObjects(newTranformation, transfiormationConfig)
     )
     setnewTranformation(null)
 
-    startTransition(async()=>{
-      // await updateCredits(userId, creditFee)
+    startTransition(async () => {
+      await updateCredits(userId, -1)
     })
   }
+
+
 
   return (
     <>
@@ -122,7 +126,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
             name="title"
             formLabel="Image Title"
             className="w-fujll"
-            render={({ field }) => <Input {...field} className="input-field" />}
+            render={({ field }) => <Input {...field} className="input-fi eld" />}
           />
 
           {type === 'fill' && (
@@ -206,6 +210,35 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
               ))}
             />
           )}
+
+
+          <div className="media-uploader-field">
+            <CustomField
+              control={form.control}
+              name="publicId"
+              className="flex size-full flex-col"
+              render={({ field }) => (
+                <MediaUploader
+                  onValueChange={field.onChange}
+                  setImage={setimage}
+                  publicId={field.value}
+                  image={image}
+                  type={type}
+                /> 
+              )}
+            />
+
+
+            <TransformedImage
+              image={image}
+              type={type}
+              title={form.getValues().title}
+              isTransforming={isTransforming}
+              setIsTransforming={setisTransforming}
+              transformationConfig={transfiormationConfig}
+            />
+
+          </div>
 
 
           <div className="flex flex-col gap-4">

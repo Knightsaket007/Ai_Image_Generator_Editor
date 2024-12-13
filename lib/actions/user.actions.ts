@@ -77,7 +77,7 @@ export async function updateCredits(userId: string, creditFee: number) {
       { _id: userId },
       { $inc: { creditBalance: creditFee }},
       { new: true }
-    ).lean();
+    )
 
     if (!updatedUserCredits) throw new Error("User credits update failed");
 
@@ -86,3 +86,4 @@ export async function updateCredits(userId: string, creditFee: number) {
     return handleError(error); // Add return for webhook response
   }
 }
+
