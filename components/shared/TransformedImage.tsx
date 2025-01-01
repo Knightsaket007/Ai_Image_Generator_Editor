@@ -54,7 +54,7 @@ const TransformedImage = ({ image, type, title, isTransforming, setIsTransformin
             {isTransforming && (
               <div className='transforming-loader'>
                 <Image
-                  src='/assests/icons/spinner.svg'
+                  src='/assets/icons/spinner.svg'
                   width={50}
                   height={50}
                   alt='transforming'
