@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } from "@/constants"
 import { CustomField } from "./CustomField"
-import { startTransition, useState, useTransition } from "react"
+import { startTransition, useEffect, useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
 import { updateCredits } from "@/lib/actions/user.actions"
 import MediaUploader from "./MediaUploader"
@@ -204,6 +204,14 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     })
   }
 
+
+  useEffect(()=>{
+
+    if(image && (type==='restore' || type==='removeBackground')){
+      setnewTranformation(transformationType.config)
+    }
+
+  },[image,transformationType.config,type])
 
 
   return (
