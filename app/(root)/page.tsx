@@ -3,7 +3,15 @@ import React from 'react'
 const Home = () => {
   return (
     <>
-    <h1>home page... in progress</h1>
+    <h1>home page</h1>
+
+    <section className="home">
+      <h1 className='home-heading'>
+        Unleash the power of the Picfer
+      </h1>
+      
+    </section>
+   
     <UserButton afterSignOutUrl='/' />
     </>
   )
