@@ -12,7 +12,7 @@ const Home = () => {
       
     </section>
    
-    <UserButton afterSignOutUrl='/' />
+    {/* <UserButton afterSignOutUrl='/' /> */}
     </>
   )
 }
