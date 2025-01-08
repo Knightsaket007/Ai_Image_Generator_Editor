@@ -11,7 +11,7 @@ const Home = () => {
         Unleash the power of the Picfer
       </h1>
 
-      {/* <Search/> */}
+      <Search/>
       
     </section>
    
